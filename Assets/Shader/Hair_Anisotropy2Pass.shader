@@ -70,8 +70,11 @@
 				UNITY_INITIALIZE_OUTPUT(v2f,o);
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
-
-				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;  
+				
+				//added by chaojet 
+				//下面的 unity_ObjectToWorld 在 Unity5.3.3中未有定义
+				//o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;  
+				o.worldPos = UnityObjectToWorldDir(v.vertex).xyz;
 				o.worldNormal = UnityObjectToWorldNormal(v.normal);  
 				return o;
 			}
@@ -156,7 +159,10 @@
 				o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
 				o.uv.zw = TRANSFORM_TEX(v.texcoord, _NormalTex);
 
-				float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;  
+				//added by chaojet 
+				//下面的 unity_ObjectToWorld 在 Unity5.3.3中未有定义
+				//float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;  
+				float3 worldPos = UnityObjectToWorldDir(v.vertex).xyz;
 				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);  
 				fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);  
 				fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w;
